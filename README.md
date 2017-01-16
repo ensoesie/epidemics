@@ -6,4 +6,4 @@ R package to define seasonal influenza epidemic onset and duration. The package 
 #Install package 
 install.packages("devtools") 
 
-install_github("ensoesie/R-epidemics-package")
+install_github("ensoesie/epidemics")
