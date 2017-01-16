@@ -8,4 +8,5 @@ install.packages("devtools")
 
 
 library("devtools")
+
 install_github("ensoesie/epidemics")
