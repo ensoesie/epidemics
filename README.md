@@ -8,7 +8,7 @@ You can install the package from GitHub using devtools:
 
 ```r
 if (!requireNamespace("devtools")) install.packages("devtools")
-devtools::install_github(""ensoesie/epidemics"")
+devtools::install_github("ensoesie/epidemics")
 ```
 
 ## Reporting bugs
