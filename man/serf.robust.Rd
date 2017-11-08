@@ -45,4 +45,3 @@ Helper function 'serf.design' constructs the design matrix according to paramete
 'trend.poly', 'harmonic', and 'period'.
 See serf.fit function for example on how to fit standard model.
 }
-
