@@ -20,4 +20,3 @@ Argument 'mon' specifies which month is written alongside the year on the
 x-axis (defaults to 'Oct').  Argument 'yr' is the starting year (defaults to 1962).
 Suppress dates from axis with argument 'dates=F'.
 }
-

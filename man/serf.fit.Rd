@@ -44,66 +44,64 @@ Helper function 'serf.design' constructs the design matrix according to paramete
 }
 \examples{
 library(splines)
-          library(MASS)
-          library(date)
+library(MASS)
+library(date)
 
-          options(warn=2)
+options(warn = 2)
 
-          data(wa_who) #load WHO ILI data for Washington state
-          names(wa_who) <- c('id','ili','total','iliperc') #rename columns
+data(wa_who) # load WHO ILI data for Washington state
+names(wa_who) <- c('id', 'ili', 'total', 'iliperc') # rename columns
 
-          head(wa_who)
+head(wa_who)
 
-          wa_who$year <- floor(wa_who/100)[1] #extract year
-          wa_who$week <- (wa_who \%\% 100)[1]   #extract week
+wa_who$year <- floor(wa_who / 100)[1] # extract year
+wa_who$week <- (wa_who \%\% 100)[1]   # extract week
 
-          names(wa_who) <- c('id','ili','total','iliperc', 'year', 'week') #add column names
-          datelist <- sort(unique(wa_who$id)) #save sorted dates
-          year <- floor(datelist/100)
-          week <- datelist \%\% 100
+names(wa_who) <- c('id', 'ili', 'total', 'iliperc', 'year', 'week') # add column names
+datelist <- sort(unique(wa_who$id)) # save sorted dates
+year <- floor(datelist / 100)
+week <- datelist \%\% 100
 
-          ili <- rep(NA,length(datelist))
-          tot <- rep(NA,length(datelist))
+ili <- rep(NA, length(datelist))
+tot <- rep(NA, length(datelist))
 
-          for (i in 1:length(datelist)) {
-           ili[i] <- sum(wa_who$ili[wa_who$id==datelist[i]],na.rm=TRUE)
-           tot[i] <- sum(wa_who$total[wa_who$id==datelist[i]],na.rm=TRUE)
-           }
-
-           ili2.dat <- data.frame(id=(1:length(datelist)), year, week, ili=ili,total=tot)
-           ili2.dat$perc <- 100*round(ili2.dat$ili/ili2.dat$total,3)
-
-
-           # Global data and plotting parameters
-           # Change as needed
-
-           g.ts <- ili2.dat$perc
-           g.ts[is.nan(g.ts)] <- 0
-           g.period <- 52.2
-           g.mon <- 'Oct'
-           g.yr <- 1997 #data start year
-           g.xlab <- 'Calendar year'
-           g.ylab <- 'Percentage of samples positive'
-           g.main <- 'WHO'
-           g.dates <- TRUE
-
-           resvec <- rep(0,length(g.ts))
-           stoptime <- length(g.ts) - 259
-           resmat <- matrix(NA,stoptime,length(g.ts))
-
-           for (i in 1:stoptime) resmat[i,i:(i+259)] <- serf.fit(g.ts, t1=i,t2=i+259,harmonic=1,thresh=1.96,output=T)$epi.thresh
-
-           for (i in 1:length(g.ts)) resvec[i] <- max(resmat[,i],na.rm=TRUE)
-
-           ilires.dat <- data.frame(year=ili2.dat$year,week=ili2.dat$week,perc=ili2.dat$perc,epidemic=resvec)
-           #write.csv(ilires.dat, ' ', row.names=FALSE) #write output to file
-
-
-           #pdf('who-timeseries.pdf') #save plot to desired location
-           #tsplot()
-           #points(which(resvec==1),g.ts[resvec==1],pch=19,col='red',cex=0.8)
-           #dev.off()
-
-
+for (i in 1:length(datelist)) {
+  ili[i] <- sum(wa_who$ili[wa_who$id == datelist[i]], na.rm = TRUE)
+  tot[i] <- sum(wa_who$total[wa_who$id == datelist[i]], na.rm = TRUE)
 }
 
+ili2.dat <- data.frame(id = (1:length(datelist)), year, week, ili = ili, total = tot)
+ili2.dat$perc <- 100 * round(ili2.dat$ili / ili2.dat$total, 3)
+
+# Global data and plotting parameters
+# Change as needed
+
+g.ts <- ili2.dat$perc
+g.ts[is.nan(g.ts)] <- 0
+g.period <- 52.2
+g.mon <- 'Oct'
+g.yr <- 1997 # data start year
+g.xlab <- 'Calendar year'
+g.ylab <- 'Percentage of samples positive'
+g.main <- 'WHO'
+g.dates <- TRUE
+
+resvec <- rep(0, length(g.ts))
+stoptime <- length(g.ts) - 259
+resmat <- matrix(NA, stoptime, length(g.ts))
+
+for (i in 1:stoptime) resmat[i, i:(i + 259)] <- serf.fit(g.ts, t1 = i, t2 = i + 259,
+                                                         harmonic = 1, thresh = 1.96,
+                                                         output = T)$epi.thresh
+
+for (i in 1:length(g.ts)) resvec[i] <- max(resmat[, i], na.rm = TRUE)
+
+ilires.dat <- data.frame(year = ili2.dat$year, week = ili2.dat$week,
+                         perc = ili2.dat$perc, epidemic = resvec)
+# write.csv(ilires.dat, ' ', row.names = FALSE) # write output to file
+
+# pdf('who-timeseries.pdf') # save plot to desired location
+# tsplot(g.ts)
+# points(which(resvec == 1), g.ts[resvec == 1], pch = 19, col = 'red', cex = 0.8)
+# dev.off()
+}

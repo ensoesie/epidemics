@@ -29,4 +29,3 @@ Data frame containing predictors for model fitting and forecasting
 Given a time series and a specified number of harmonic and polynomial
  terms, this function builds the dataframe needed for the call to lm(). See serf.fit function for example on how to fit model.
 }
-

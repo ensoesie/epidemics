@@ -14,4 +14,3 @@ agg.ts(ts, len)
 \description{
 Takes a time series and collapses to different temporal units. See serf.fit function for example on how to fit model.
 }
-
